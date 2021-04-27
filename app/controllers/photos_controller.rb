@@ -66,7 +66,7 @@ class PhotosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def photo_params
-      params.require(:photo).permit(:image, :comments_count, :likes_count, :caption, :owner_id)
+      params.require(:photo).permit(:image, :comments_count, :likes_count, :caption)
     end
 
     def ensure_current_user_is_owner
