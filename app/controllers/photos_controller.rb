@@ -1,6 +1,7 @@
 class PhotosController < ApplicationController
   before_action :set_photo, only: %i[ show edit update destroy ]
   before_action :ensure_current_user_is_owner, only: [:destroy, :update, :edit]
+  before_action :ensure_current_user_is_follower_or_public, only: [:show]
 
   # GET /photos or /photos.json
   def index
@@ -73,5 +74,13 @@ class PhotosController < ApplicationController
       if current_user != @photo.owner
         redirect_back fallback_location: root_url, alert: "You are not authorized for that"
       end
+    end
+    
+    def ensure_current_user_is_follower_or_public
+      if current_user != @photo.owner  
+        if current_user.leaders.find_by(id: @photo.owner.id).blank? && @photo.owner.private == true
+          redirect_back fallback_location: root_url, alert: "You are not authorized for that"
+        end
+      end  
     end    
 end
