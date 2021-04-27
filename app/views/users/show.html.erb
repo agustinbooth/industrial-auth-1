@@ -1,19 +1,24 @@
+
 <div class="row mb-4">
   <div class="col-md-6 offset-md-3">
     <%= render "users/user", user: @user %>
   </div>
 </div>
 
-<div class="row mb-2">
-  <div class="col-md-6 offset-md-3">
-    <%= render "users/profile_nav", user: @user %>
-  </div>
-</div>
-
-<% @user.own_photos.each do |photo| %>
-  <div class="row mb-4">
-    <div class="col-md-6 offset-md-3">
-      <%= render "photos/photo", photo: photo %>
+<% if current_user == @user || @user.private == false || current_user.leaders.find_by(id: @user.id).present? %>
+    <div class="row mb-2">
+      <div class="col-md-6 offset-md-3">
+        <%= render "users/profile_nav", user: @user %>
+      </div>
     </div>
-  </div>
-<% end %>
+
+    <% @user.own_photos.each do |photo| %>
+      <div class="row mb-4">
+        <div class="col-md-6 offset-md-3">
+          <%= render "photos/photo", photo: photo %>
+        </div>
+      </div>
+    <% end %>
+<%else%>    
+<%end%>  
+
